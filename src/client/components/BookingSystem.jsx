@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BookingForm from "./BookingForm";
+import BookingDetails from "./BookingDetails";
 
 const localizer = momentLocalizer(moment);
 
@@ -15,6 +16,29 @@ const BookingSystem = () => {
     setBookings([...bookings, newBooking]);
   };
 
+  // Updating an existing booking
+  const handleUpdateBooking = (updatedBooking) => {
+    const updatedBookings = bookings.map((booking) =>
+      booking.id === updatedBooking.id ? updatedBooking : booking
+    );
+    setBookings(updatedBookings);
+    setSelectedBooking(null);
+  };
+
+  // Deleting a booking
+  const handleDeleteBooking = (bookingId) => {
+    const updatedBookings = bookings.filter(
+      (booking) => booking.id !== bookingId
+    );
+    setBookings(updatedBookings);
+    setSelectedBooking(null);
+  };
+
+  // Selecting a booking from the calendar
+  const handleSelectBooking = (event) => {
+    const selectedBooking = bookings.find((booking) => booking.id === event.id);
+    setSelectedBooking(selectedBooking);
+  };
   return (
     <div>
       <h2>Booking System</h2>
@@ -23,10 +47,19 @@ const BookingSystem = () => {
           localizer={localizer}
           events={bookings}
           selectable
-          onSelectSlot={(slotInfo) => setSelectedBooking(null)}
+          onSelectEvent={handleSelectBooking}
+          onSelectSlot={() => setSelectedBooking(null)}
         />
       </div>
-      <BookingForm onCreate={handleCreateBooking} />
+      {selectedBooking ? (
+        <BookingDetails
+          booking={selectedBooking}
+          onUpdate={handleUpdateBooking}
+          onDelete={handleDeleteBooking}
+        />
+      ) : (
+        <BookingForm onCreate={handleCreateBooking} />
+      )}
     </div>
   );
 };
