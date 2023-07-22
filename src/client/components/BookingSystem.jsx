@@ -4,6 +4,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BookingForm from "./BookingForm";
 import BookingDetails from "./BookingDetails";
+import CustomEvent from "./CustomEvent";
 
 const localizer = momentLocalizer(moment);
 
@@ -50,6 +51,9 @@ const BookingSystem = () => {
           onSelectEvent={handleSelectBooking}
           onSelectSlot={() => setSelectedBooking(null)}
           style={{ height: "500px", width: "700px" }}
+          components={{
+            event: CustomEvent,
+          }}
         />
       </div>
       {selectedBooking ? (

@@ -17,8 +17,10 @@ const BookingDetails = ({ booking, onUpdate, onDelete }) => {
   }, [booking]);
 
   const handleUpdate = () => {
-    if (!title || !start || !end)
-      return window.alert("All fields are compulsory");
+    if (!title || !start || !end) {
+      alert("All fields are compulsory");
+      return;
+    }
 
     const updatedBooking = {
       ...booking,
