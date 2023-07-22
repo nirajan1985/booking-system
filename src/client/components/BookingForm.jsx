@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 const BookingForm = ({ onCreate }) => {
   const [title, setTitle] = useState("");
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
 
   const handleCreate = () => {
     const newBooking = {
@@ -15,8 +15,8 @@ const BookingForm = ({ onCreate }) => {
     console.log(newBooking);
     onCreate(newBooking);
     setTitle("");
-    setStart(new Date());
-    setEnd(new Date());
+    setStart("");
+    setEnd("");
   };
 
   return (
