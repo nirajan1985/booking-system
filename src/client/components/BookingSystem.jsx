@@ -40,15 +40,16 @@ const BookingSystem = () => {
     setSelectedBooking(selectedBooking);
   };
   return (
-    <div>
+    <div className="app-booking">
       <h2>Booking System</h2>
-      <div style={{ height: "500px" }}>
+      <div>
         <Calendar
           localizer={localizer}
           events={bookings}
           selectable
           onSelectEvent={handleSelectBooking}
           onSelectSlot={() => setSelectedBooking(null)}
+          style={{ height: "500px", width: "700px" }}
         />
       </div>
       {selectedBooking ? (

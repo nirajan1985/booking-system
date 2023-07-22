@@ -5,7 +5,9 @@ const BookingForm = ({ onCreate }) => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
-  const handleCreate = () => {
+  const handleCreate = (e) => {
+    e.preventDefault();
+
     const newBooking = {
       id: Date.now(),
       title,
@@ -20,32 +22,35 @@ const BookingForm = ({ onCreate }) => {
   };
 
   return (
-    <div>
-      <h3>Create Booking</h3>
+    <form onSubmit={handleCreate} className="form-booking">
+      <h2>Create Booking</h2>
       <label>Meeting Title:</label>
       <input
         type="text"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
-      <br />
+
       <label>Start Time:</label>
       <input
         type="datetime-local"
         value={start}
         onChange={(e) => setStart(e.target.value)}
+        required
       />
-      <br />
+
       <label>End Time:</label>
       <input
         type="datetime-local"
         value={end}
         onChange={(e) => setEnd(e.target.value)}
+        required
       />
-      <br />
-      <button onClick={handleCreate}>Create Booking</button>
-    </div>
+
+      <button className="button">Create Booking</button>
+    </form>
   );
 };
 

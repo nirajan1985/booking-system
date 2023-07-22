@@ -17,6 +17,9 @@ const BookingDetails = ({ booking, onUpdate, onDelete }) => {
   }, [booking]);
 
   const handleUpdate = () => {
+    if (!title || !start || !end)
+      return window.alert("All fields are compulsory");
+
     const updatedBooking = {
       ...booking,
       title,
@@ -28,35 +31,42 @@ const BookingDetails = ({ booking, onUpdate, onDelete }) => {
   };
 
   const handleDelete = () => {
-    onDelete(booking.id);
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this booking ?"
+    );
+    if (confirmed) onDelete(booking.id);
   };
 
   return (
-    <div>
-      <h3>Edit Booking</h3>
+    <div className="form-details">
+      <h2>Edit Booking</h2>
       <label>Meeting Title:</label>
       <input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <br />
+
       <label>Start Time:</label>
       <input
         type="datetime-local"
         value={start}
         onChange={(e) => setStart(e.target.value)}
       />
-      <br />
+
       <label>End Time:</label>
       <input
         type="datetime-local"
         value={end}
         onChange={(e) => setEnd(e.target.value)}
       />
-      <br />
-      <button onClick={handleUpdate}>Update Booking</button>
-      <button onClick={handleDelete}>Delete Booking</button>
+
+      <button onClick={handleUpdate} className="button">
+        Update Booking
+      </button>
+      <button onClick={handleDelete} className="button">
+        Delete Booking
+      </button>
     </div>
   );
 };
