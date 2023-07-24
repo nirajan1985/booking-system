@@ -28,7 +28,7 @@ const BookingDetails = ({ booking, onUpdate, onDelete }) => {
       start,
       end,
     };
-    console.log(updatedBooking);
+
     onUpdate(updatedBooking);
   };
 

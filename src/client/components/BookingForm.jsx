@@ -14,7 +14,7 @@ const BookingForm = ({ onCreate }) => {
       start,
       end,
     };
-    console.log(newBooking);
+
     onCreate(newBooking);
     setTitle("");
     setStart("");
