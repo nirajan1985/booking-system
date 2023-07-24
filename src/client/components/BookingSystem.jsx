@@ -5,33 +5,30 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import BookingForm from "./BookingForm";
 import BookingDetails from "./BookingDetails";
 import CustomEvent from "./CustomEvent";
+import { useBooking } from "../hooks/useBooking";
+import { useBookingMutation } from "../hooks/useBookingMutation";
 
 const localizer = momentLocalizer(moment);
 
 const BookingSystem = () => {
-  const [bookings, setBookings] = useState([]);
+  const { data: bookings = [], isLoading, isError, error } = useBooking(); //TODO do something on error, and maybe show loading spinner?
+  const { createBooking, updateBooking, deleteBooking } = useBookingMutation();
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   // Creating a new booking
   const handleCreateBooking = (newBooking) => {
-    setBookings([...bookings, newBooking]);
+    createBooking.mutate(newBooking);
   };
 
   // Updating an existing booking
   const handleUpdateBooking = (updatedBooking) => {
-    const updatedBookings = bookings.map((booking) =>
-      booking.id === updatedBooking.id ? updatedBooking : booking
-    );
-    setBookings(updatedBookings);
+    updateBooking.mutate(updatedBooking);
     setSelectedBooking(null);
   };
 
   // Deleting a booking
   const handleDeleteBooking = (bookingId) => {
-    const updatedBookings = bookings.filter(
-      (booking) => booking.id !== bookingId
-    );
-    setBookings(updatedBookings);
+    deleteBooking.mutate(bookingId);
     setSelectedBooking(null);
   };
 

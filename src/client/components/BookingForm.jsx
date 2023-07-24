@@ -24,7 +24,7 @@ const BookingForm = ({ onCreate }) => {
   return (
     <form onSubmit={handleCreate} className="form-booking">
       <h2>Create Booking</h2>
-      <label>Meeting Title:</label>
+      <label>Booking Title:</label>
       <input
         type="text"
         placeholder="Title"
