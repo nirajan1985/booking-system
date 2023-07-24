@@ -23,6 +23,15 @@ const BookingForm = ({ onCreate }) => {
       return;
     }
 
+    // Calculate the duration of the booking in milliseconds
+    const bookingDuration = endTime.getTime() - startTime.getTime();
+
+    // Check if the booking duration exceeds 3 hours (in milliseconds, 3 hours = 3 * 60 * 60 * 1000)
+    if (bookingDuration > 3 * 60 * 60 * 1000) {
+      alert("Maximum booking duration is 3 hours per day.");
+      return;
+    }
+
     const newBooking = {
       id: Date.now(),
       title,
