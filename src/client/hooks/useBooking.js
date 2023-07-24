@@ -7,7 +7,7 @@ import axios from "axios";
  * @return {Promise} A promise that resolves to the data returned by the API.
  */
 const fetchBookings = async () => {
-  const response = await axios.get("http://localhost:3000/api/bookings");
+  const response = await axios.get("http://localhost:8080/api/bookings");
   const bookings = response.data.data;
   return bookings.map((booking) => {
     return {

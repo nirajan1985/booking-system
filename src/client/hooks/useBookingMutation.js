@@ -20,7 +20,7 @@ export const useBookingMutation = () => {
         roomId: 1, //TODO Hardcoded for simplicity sake
       };
 
-      return axios.post("http://localhost:3000/api/bookings", bookingData);
+      return axios.post("http://localhost:8080/api/bookings", bookingData);
     },
     {
       onSuccess: () => {
@@ -40,7 +40,7 @@ export const useBookingMutation = () => {
       };
 
       return axios.put(
-        `http://localhost:3000/api/bookings/${updatedBooking.id}`,
+        `http://localhost:8080/api/bookings/${updatedBooking.id}`,
         bookingData
       );
     },
@@ -52,7 +52,7 @@ export const useBookingMutation = () => {
   );
   const deleteBooking = useMutation(
     (bookingId) =>
-      axios.delete(`http://localhost:3000/api/bookings/${bookingId}`),
+      axios.delete(`http://localhost:8080/api/bookings/${bookingId}`),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("bookings");
