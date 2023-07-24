@@ -11,7 +11,7 @@ import { useBookingMutation } from "../hooks/useBookingMutation";
 const localizer = momentLocalizer(moment);
 
 const BookingSystem = () => {
-  const { data: bookings = [], isLoading, isError, error } = useBooking(); //TODO do something on error, and maybe show loading spinner?
+  const { data: bookings = [] } = useBooking();
   const { createBooking, updateBooking, deleteBooking } = useBookingMutation();
   const [selectedBooking, setSelectedBooking] = useState(null);
 

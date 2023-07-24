@@ -8,6 +8,21 @@ const BookingForm = ({ onCreate }) => {
   const handleCreate = (e) => {
     e.preventDefault();
 
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+
+    // Check if the booking falls on a weekday (Monday to Friday), Sunday counted 0 as start of week and Saturday counted 6 as last day of week.
+    if (startTime.getDay() === 0 || startTime.getDay() === 6) {
+      alert("Bookings are allowed only during weekdays (Monday to Friday).");
+      return;
+    }
+
+    // Check if the booking starts or ends before 7 AM or after 5 PM
+    if (startTime.getHours() < 7 || endTime.getHours() > 17) {
+      alert("Bookings are allowed only during working hours (7 AM to 5 PM).");
+      return;
+    }
+
     const newBooking = {
       id: Date.now(),
       title,
@@ -49,7 +64,7 @@ const BookingForm = ({ onCreate }) => {
         required
       />
 
-      <button className="button">Create Booking</button>
+      <button className="button">Save</button>
     </form>
   );
 };
