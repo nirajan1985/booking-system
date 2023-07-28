@@ -1,12 +1,36 @@
-import React, { useState } from "react";
-import { validateBooking } from "./BookingUtils";
+// BookingForm.js
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { validateBooking } from "./BookingUtils.js";
 
-const BookingForm = ({ onCreate, existingBookings }) => {
-  const [title, setTitle] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
+const BookingForm = ({
+  booking,
+  onSave,
 
-  const handleCreate = (e) => {
+  onCancel,
+  existingBookings,
+}) => {
+  const isEditMode = !!booking;
+  const [title, setTitle] = useState(isEditMode ? booking.title : "");
+  const [start, setStart] = useState(
+    isEditMode ? format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm") : ""
+  );
+  const [end, setEnd] = useState(
+    isEditMode ? format(new Date(booking.end), "yyyy-MM-dd'T'HH:mm") : ""
+  );
+  useEffect(() => {
+    if (isEditMode) {
+      setTitle(booking.title);
+      setStart(format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm"));
+      setEnd(format(new Date(booking.end), "yyyy-MM-dd'T'HH:mm"));
+    } else {
+      setTitle("");
+      setStart("");
+      setEnd("");
+    }
+  }, [booking, isEditMode]);
+
+  const handleAction = (e) => {
     e.preventDefault();
 
     const startTime = new Date(start);
@@ -23,26 +47,29 @@ const BookingForm = ({ onCreate, existingBookings }) => {
       return;
     }
 
-    const newBooking = {
-      id: Date.now(),
+    const bookingData = {
       title,
       start,
       end,
     };
 
-    onCreate(newBooking);
+    if (isEditMode) {
+      onSave({ ...booking, ...bookingData });
+    } else {
+      onSave(bookingData);
+    }
+
     setTitle("");
     setStart("");
     setEnd("");
   };
 
   return (
-    <form onSubmit={handleCreate} className="form-booking">
-      <h2>Create Booking</h2>
+    <form onSubmit={handleAction} className="form-booking">
+      <h2>{isEditMode ? "Edit Booking" : "Create Booking"}</h2>
       <label>Booking Title:</label>
       <input
         type="text"
-        placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
@@ -64,7 +91,12 @@ const BookingForm = ({ onCreate, existingBookings }) => {
         required
       />
 
-      <button className="button">Save</button>
+      <button className="button">{isEditMode ? "Update" : "Save"}</button>
+      {isEditMode && (
+        <button type="button" onClick={onCancel} className="button">
+          Cancel
+        </button>
+      )}
     </form>
   );
 };

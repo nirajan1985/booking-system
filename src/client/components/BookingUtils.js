@@ -17,7 +17,7 @@ export function validateBooking(startTime, endTime, existingBookings) {
     return "Maximum booking duration is 3 hours per day.";
   }
 
-  // Check for overlap with existing bookings
+  /* // Check for overlap with existing bookings
   const overlap = existingBookings.some((booking) => {
     const existingStartTime = new Date(booking.start);
     const existingEndTime = new Date(booking.end);
@@ -26,11 +26,12 @@ export function validateBooking(startTime, endTime, existingBookings) {
       (endTime > existingStartTime && endTime <= existingEndTime) ||
       (startTime <= existingStartTime && endTime >= existingEndTime)
     );
-  });
+  }); 
 
   if (overlap) {
     return "The room is already booked for the specified time range.";
   }
+  */
 
   return null; // No validation error
 }
