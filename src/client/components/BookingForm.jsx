@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { validateBooking } from "./BookingUtils";
 
-const BookingForm = ({ onCreate }) => {
+const BookingForm = ({ onCreate, existingBookings }) => {
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
@@ -11,24 +12,14 @@ const BookingForm = ({ onCreate }) => {
     const startTime = new Date(start);
     const endTime = new Date(end);
 
-    // Check if the booking falls on a weekday (Monday to Friday), Sunday counted 0 as start of week and Saturday counted 6 as last day of week.
-    if (startTime.getDay() === 0 || startTime.getDay() === 6) {
-      alert("Bookings are allowed only during weekdays (Monday to Friday).");
-      return;
-    }
+    const validationError = validateBooking(
+      startTime,
+      endTime,
+      existingBookings
+    );
 
-    // Check if the booking starts or ends before 7 AM or after 5 PM
-    if (startTime.getHours() < 7 || endTime.getHours() > 17) {
-      alert("Bookings are allowed only during working hours (7 AM to 5 PM).");
-      return;
-    }
-
-    // Calculate the duration of the booking in milliseconds
-    const bookingDuration = endTime.getTime() - startTime.getTime();
-
-    // Check if the booking duration exceeds 3 hours (in milliseconds, 3 hours = 3 * 60 * 60 * 1000)
-    if (bookingDuration > 3 * 60 * 60 * 1000) {
-      alert("Maximum booking duration is 3 hours per day.");
+    if (validationError) {
+      alert(validationError);
       return;
     }
 

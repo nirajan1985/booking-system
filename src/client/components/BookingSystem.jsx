@@ -11,10 +11,18 @@ import { useBookingMutation } from "../hooks/useBookingMutation";
 const localizer = momentLocalizer(moment);
 
 const BookingSystem = () => {
-  const { data: bookings = [] } = useBooking();
+  const { data: bookings = [], isLoading, isError } = useBooking();
+
   const { createBooking, updateBooking, deleteBooking } = useBookingMutation();
   const [selectedBooking, setSelectedBooking] = useState(null);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error while fetching data.</div>;
+  }
   // Creating a new booking
   const handleCreateBooking = (newBooking) => {
     createBooking.mutate(newBooking);
@@ -58,9 +66,13 @@ const BookingSystem = () => {
           booking={selectedBooking}
           onUpdate={handleUpdateBooking}
           onDelete={handleDeleteBooking}
+          existingBookings={bookings}
         />
       ) : (
-        <BookingForm onCreate={handleCreateBooking} />
+        <BookingForm
+          onCreate={handleCreateBooking}
+          existingBookings={bookings}
+        />
       )}
     </div>
   );

@@ -19,11 +19,6 @@ const fetchBookings = async () => {
   });
 };
 
-/**
- * Generates a function comment for the given function body in a markdown code block with the correct language syntax.
- *
- * @return {type} The function comment in markdown format.
- */
 export const useBooking = () => {
   return useQuery(["bookings"], fetchBookings);
 };
