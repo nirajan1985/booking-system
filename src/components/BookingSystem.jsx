@@ -32,13 +32,11 @@ const BookingSystem = () => {
     setSelectedBooking(null);
   };
 
-  const handleUpdateBooking = (updatedBooking) => {
-    updateBooking.mutate(updatedBooking);
-    setSelectedBooking(null);
-  };
-
   const handleDeleteBooking = (bookingId) => {
-    deleteBooking.mutate(bookingId);
+    if (selectedBooking) {
+      deleteBooking.mutate(bookingId);
+    }
+
     setSelectedBooking(null);
   };
 
@@ -66,10 +64,9 @@ const BookingSystem = () => {
 
       <BookingForm
         onSave={handleAction}
-        onUpdate={handleUpdateBooking}
-        onCancel={handleDeleteBooking}
+        onDelete={handleDeleteBooking}
         existingBookings={bookings}
-        booking={selectedBooking} // Pass null for creating a new booking
+        booking={selectedBooking} // Pass the selected booking for editing, or null for creating a new booking
       />
     </div>
   );

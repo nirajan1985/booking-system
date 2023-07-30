@@ -3,14 +3,9 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { validateBooking } from "./BookingUtils.js";
 
-const BookingForm = ({
-  booking,
-  onSave,
-
-  onCancel,
-  existingBookings,
-}) => {
+const BookingForm = ({ booking, onSave, onDelete, existingBookings }) => {
   const isEditMode = !!booking;
+
   const [title, setTitle] = useState(isEditMode ? booking.title : "");
   const [start, setStart] = useState(
     isEditMode ? format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm") : ""
@@ -64,6 +59,15 @@ const BookingForm = ({
     setEnd("");
   };
 
+  const handleDelete = () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
+    if (confirmed) {
+      onDelete(booking.id);
+    }
+  };
+
   return (
     <form onSubmit={handleAction} className="form-booking">
       <h2>{isEditMode ? "Edit Booking" : "Create Booking"}</h2>
@@ -93,8 +97,8 @@ const BookingForm = ({
 
       <button className="button">{isEditMode ? "Update" : "Save"}</button>
       {isEditMode && (
-        <button type="button" onClick={onCancel} className="button">
-          Cancel
+        <button type="button" onClick={handleDelete} className="button">
+          Delete
         </button>
       )}
     </form>
