@@ -1,4 +1,4 @@
-export function validateBooking(startTime, endTime, existingBookings) {
+export function validateBooking(startTime, endTime, existingBookings, booking) {
   // Check if the booking falls on a weekday (Monday to Friday)
   if (startTime.getDay() === 0 || startTime.getDay() === 6) {
     return "Bookings are allowed only during weekdays (Monday to Friday).";
@@ -17,21 +17,25 @@ export function validateBooking(startTime, endTime, existingBookings) {
     return "Maximum booking duration is 3 hours per day.";
   }
 
-  /* // Check for overlap with existing bookings
-  const overlap = existingBookings.some((booking) => {
-    const existingStartTime = new Date(booking.start);
-    const existingEndTime = new Date(booking.end);
+  // Check for overlap with existing bookings
+  const overlap = existingBookings.some((existingBooking) => {
+    if (existingBooking.id === booking?.id) {
+      // Skip the current booking when checking for overlap in edit mode
+      return false;
+    }
+    const existingStartTime = new Date(existingBooking.start);
+    const existingEndTime = new Date(existingBooking.end);
+
     return (
       (startTime >= existingStartTime && startTime < existingEndTime) ||
       (endTime > existingStartTime && endTime <= existingEndTime) ||
       (startTime <= existingStartTime && endTime >= existingEndTime)
     );
-  }); 
+  });
 
   if (overlap) {
     return "The room is already booked for the specified time range.";
   }
-  */
 
   return null; // No validation error
 }

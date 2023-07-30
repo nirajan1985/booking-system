@@ -23,20 +23,17 @@ const BookingSystem = () => {
     return <div>Error while fetching data.</div>;
   }
 
-  const handleAction = (newBooking) => {
-    if (selectedBooking) {
-      updateBooking.mutate(newBooking);
-    } else {
-      createBooking.mutate(newBooking);
-    }
+  const handleCreateBooking = (newBooking) => {
+    createBooking.mutate(newBooking);
+    setSelectedBooking(null);
+  };
+  const handleUpdateBooking = (newBooking) => {
+    updateBooking.mutate(newBooking);
     setSelectedBooking(null);
   };
 
   const handleDeleteBooking = (bookingId) => {
-    if (selectedBooking) {
-      deleteBooking.mutate(bookingId);
-    }
-
+    deleteBooking.mutate(bookingId);
     setSelectedBooking(null);
   };
 
@@ -63,7 +60,8 @@ const BookingSystem = () => {
       </div>
 
       <BookingForm
-        onSave={handleAction}
+        onCreate={handleCreateBooking}
+        onUpdate={handleUpdateBooking}
         onDelete={handleDeleteBooking}
         existingBookings={bookings}
         booking={selectedBooking} // Pass the selected booking for editing, or null for creating a new booking

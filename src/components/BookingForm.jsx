@@ -3,7 +3,13 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { validateBooking } from "./BookingUtils.js";
 
-const BookingForm = ({ booking, onSave, onDelete, existingBookings }) => {
+const BookingForm = ({
+  booking,
+  onCreate,
+  onUpdate,
+  onDelete,
+  existingBookings,
+}) => {
   const isEditMode = !!booking;
 
   const [title, setTitle] = useState(isEditMode ? booking.title : "");
@@ -23,7 +29,7 @@ const BookingForm = ({ booking, onSave, onDelete, existingBookings }) => {
       setStart("");
       setEnd("");
     }
-  }, [booking, isEditMode]);
+  }, [isEditMode]);
 
   const handleAction = (e) => {
     e.preventDefault();
@@ -34,7 +40,8 @@ const BookingForm = ({ booking, onSave, onDelete, existingBookings }) => {
     const validationError = validateBooking(
       startTime,
       endTime,
-      existingBookings
+      existingBookings,
+      booking
     );
 
     if (validationError) {
@@ -49,9 +56,9 @@ const BookingForm = ({ booking, onSave, onDelete, existingBookings }) => {
     };
 
     if (isEditMode) {
-      onSave({ ...booking, ...bookingData });
+      onUpdate({ ...booking, ...bookingData });
     } else {
-      onSave(bookingData);
+      onCreate(bookingData);
     }
 
     setTitle("");
