@@ -5,7 +5,11 @@ export function validateBooking(startTime, endTime, existingBookings, booking) {
   }
 
   // Check if the booking starts or ends before 7 AM or after 5 PM
-  if (startTime.getHours() < 7 || endTime.getHours() > 17) {
+  if (
+    startTime.getHours() < 7 ||
+    endTime.getHours() > 17 ||
+    (endTime.getHours() === 17 && endTime.getMinutes() > 0)
+  ) {
     return "Bookings are allowed only during working hours (7 AM to 5 PM).";
   }
 
