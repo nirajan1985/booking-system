@@ -1,4 +1,4 @@
-import BookingSystem from "./client/components/BookingSystem.jsx";
+import BookingSystem from "./components/BookingSystem.jsx";
 
 function App() {
   return (

@@ -3,7 +3,6 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BookingForm from "./BookingForm";
-import BookingDetails from "./BookingDetails";
 import CustomEvent from "./CustomEvent";
 import { useBooking } from "../hooks/useBooking";
 import { useBookingMutation } from "../hooks/useBookingMutation";
@@ -23,28 +22,26 @@ const BookingSystem = () => {
   if (isError) {
     return <div>Error while fetching data.</div>;
   }
-  // Creating a new booking
+
   const handleCreateBooking = (newBooking) => {
     createBooking.mutate(newBooking);
+    setSelectedBooking(null);
   };
-
-  // Updating an existing booking
-  const handleUpdateBooking = (updatedBooking) => {
-    updateBooking.mutate(updatedBooking);
+  const handleUpdateBooking = (newBooking) => {
+    updateBooking.mutate(newBooking);
     setSelectedBooking(null);
   };
 
-  // Deleting a booking
   const handleDeleteBooking = (bookingId) => {
     deleteBooking.mutate(bookingId);
     setSelectedBooking(null);
   };
 
-  // Selecting a booking from the calendar
   const handleSelectBooking = (event) => {
     const selectedBooking = bookings.find((booking) => booking.id === event.id);
     setSelectedBooking(selectedBooking);
   };
+
   return (
     <div className="app-booking">
       <h2>Booking System</h2>
@@ -61,19 +58,14 @@ const BookingSystem = () => {
           }}
         />
       </div>
-      {selectedBooking ? (
-        <BookingDetails
-          booking={selectedBooking}
-          onUpdate={handleUpdateBooking}
-          onDelete={handleDeleteBooking}
-          existingBookings={bookings}
-        />
-      ) : (
-        <BookingForm
-          onCreate={handleCreateBooking}
-          existingBookings={bookings}
-        />
-      )}
+
+      <BookingForm
+        onCreate={handleCreateBooking}
+        onUpdate={handleUpdateBooking}
+        onDelete={handleDeleteBooking}
+        existingBookings={bookings}
+        booking={selectedBooking} // Pass the selected booking for editing, or null for creating a new booking
+      />
     </div>
   );
 };
