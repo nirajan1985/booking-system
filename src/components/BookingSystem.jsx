@@ -44,7 +44,7 @@ const BookingSystem = () => {
 
   return (
     <div className="app-booking">
-      <h1>Booking System</h1>
+      <h2>Booking System</h2>
       <div>
         <Calendar
           localizer={localizer}
