@@ -20,21 +20,19 @@ const BookingForm = ({
 
   const [formData, setFormData] = useState(initialFormData);
 
-  /* const [title, setTitle] = useState(isEditMode ? booking.title : "");
-  const [start, setStart] = useState(
-    isEditMode ? format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm") : ""
-  );
-  const [end, setEnd] = useState(
-    isEditMode ? format(new Date(booking.end), "yyyy-MM-dd'T'HH:mm") : ""
-  );
-  */
+  const formatLocalDateTime = (utcDateTime) => {
+    const localDate = new Date(utcDateTime);
+    return format(localDate, "yyyy-MM-dd'T'HH:mm");
+  };
+  // console.log("booking", booking);
+
   useEffect(() => {
     if (isEditMode) {
       setFormData({
         ...formData,
         title: booking.title,
-        start: format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm"),
-        end: format(new Date(booking.end), "yyyy-MM-dd'T'HH:mm"),
+        start: formatLocalDateTime(booking.start),
+        end: formatLocalDateTime(booking.end),
       });
     } else {
       setFormData(initialFormData);
@@ -58,7 +56,7 @@ const BookingForm = ({
       alert(validationError);
       return;
     }
-    console.log("FORMDATA", formData);
+
     const bookingData = {
       ...formData,
       start: startTime,
