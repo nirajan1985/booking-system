@@ -9,12 +9,13 @@ import axios from "axios";
 const fetchBookings = async () => {
   const response = await axios.get("http://localhost:8080/api/bookings");
   const bookings = response.data.data;
+  //console.log(bookings);
   return bookings.map((booking) => {
     return {
       id: booking.id,
       title: booking.bookingTitle, // Replace this with actual title, if available
-      start: new Date(booking.startTime),
-      end: new Date(booking.endTime),
+      start: booking.startTime,
+      end: booking.endTime,
     };
   });
 };

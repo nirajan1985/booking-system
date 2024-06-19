@@ -12,30 +12,38 @@ const BookingForm = ({
 }) => {
   const isEditMode = !!booking;
 
-  const [title, setTitle] = useState(isEditMode ? booking.title : "");
-  const [start, setStart] = useState(
-    isEditMode ? format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm") : ""
-  );
-  const [end, setEnd] = useState(
-    isEditMode ? format(new Date(booking.end), "yyyy-MM-dd'T'HH:mm") : ""
-  );
+  const initialFormData = {
+    title: "",
+    start: "",
+    end: "",
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const formatLocalDateTime = (utcDateTime) => {
+    const localDate = new Date(utcDateTime);
+    return format(localDate, "yyyy-MM-dd'T'HH:mm");
+  };
+  // console.log("booking", booking);
+
   useEffect(() => {
     if (isEditMode) {
-      setTitle(booking.title);
-      setStart(format(new Date(booking.start), "yyyy-MM-dd'T'HH:mm"));
-      setEnd(format(new Date(booking.end), "yyyy-MM-dd'T'HH:mm"));
+      setFormData({
+        ...formData,
+        title: booking.title,
+        start: formatLocalDateTime(booking.start),
+        end: formatLocalDateTime(booking.end),
+      });
     } else {
-      setTitle("");
-      setStart("");
-      setEnd("");
+      setFormData(initialFormData);
     }
   }, [isEditMode]);
 
   const handleAction = (e) => {
     e.preventDefault();
 
-    const startTime = new Date(start);
-    const endTime = new Date(end);
+    const startTime = new Date(formData.start);
+    const endTime = new Date(formData.end);
 
     const validationError = validateBooking(
       startTime,
@@ -50,9 +58,9 @@ const BookingForm = ({
     }
 
     const bookingData = {
-      title,
-      start,
-      end,
+      ...formData,
+      start: startTime,
+      end: endTime,
     };
 
     if (isEditMode) {
@@ -61,9 +69,7 @@ const BookingForm = ({
       onCreate(bookingData);
     }
 
-    setTitle("");
-    setStart("");
-    setEnd("");
+    setFormData(initialFormData);
   };
 
   const handleDelete = () => {
@@ -74,6 +80,10 @@ const BookingForm = ({
       onDelete(booking.id);
     }
   };
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   return (
     <form onSubmit={handleAction} className="form-booking">
@@ -81,24 +91,27 @@ const BookingForm = ({
       <label>Booking Title:</label>
       <input
         type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        name="title"
+        value={formData.title}
+        onChange={handleChange}
         required
       />
 
       <label>Start Time:</label>
       <input
         type="datetime-local"
-        value={start}
-        onChange={(e) => setStart(e.target.value)}
+        name="start"
+        value={formData.start}
+        onChange={handleChange}
         required
       />
 
       <label>End Time:</label>
       <input
         type="datetime-local"
-        value={end}
-        onChange={(e) => setEnd(e.target.value)}
+        name="end"
+        value={formData.end}
+        onChange={handleChange}
         required
       />
 

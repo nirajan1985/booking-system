@@ -13,8 +13,8 @@ export const useBookingMutation = () => {
   const createBooking = useMutation(
     (newBooking) => {
       const bookingData = {
-        startTime: formatISO(parseISO(newBooking.start)),
-        endTime: formatISO(parseISO(newBooking.end)),
+        startTime: newBooking.start,
+        endTime: newBooking.end,
         bookingTitle: newBooking.title,
         userId: 1, //TODO Hardcoded for simplicity sake
         roomId: 1, //TODO Hardcoded for simplicity sake
@@ -32,8 +32,8 @@ export const useBookingMutation = () => {
   const updateBooking = useMutation(
     (updatedBooking) => {
       const bookingData = {
-        startTime: formatISO(parseISO(updatedBooking.start)),
-        endTime: formatISO(parseISO(updatedBooking.end)),
+        startTime: updatedBooking.start,
+        endTime: updatedBooking.end,
         bookingTitle: updatedBooking.title,
         userId: 1, //TODO Replace with actual user ID
         roomId: 1, //TODO Replace with actual room ID
