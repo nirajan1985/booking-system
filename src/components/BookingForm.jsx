@@ -13,11 +13,13 @@ const BookingForm = ({
   const isEditMode = !!booking;
 
   const initialFormData = {
+    id: "",
     title: "",
     start: "",
     end: "",
   };
 
+  console.log("SELECTED BOOKING", booking);
   const [formData, setFormData] = useState(initialFormData);
 
   const formatLocalDateTime = (utcDateTime) => {
@@ -30,6 +32,7 @@ const BookingForm = ({
     if (isEditMode) {
       setFormData({
         ...formData,
+        id: booking.id,
         title: booking.title,
         start: formatLocalDateTime(booking.start),
         end: formatLocalDateTime(booking.end),
@@ -37,7 +40,7 @@ const BookingForm = ({
     } else {
       setFormData(initialFormData);
     }
-  }, [isEditMode]);
+  }, [isEditMode, booking]);
 
   const handleAction = (e) => {
     e.preventDefault();
@@ -57,16 +60,16 @@ const BookingForm = ({
       return;
     }
 
-    const bookingData = {
+    const newBooking = {
       ...formData,
       start: startTime,
       end: endTime,
     };
 
     if (isEditMode) {
-      onUpdate({ ...booking, ...bookingData });
+      onUpdate({ ...booking, ...newBooking });
     } else {
-      onCreate(bookingData);
+      onCreate(newBooking);
     }
 
     setFormData(initialFormData);
@@ -76,6 +79,7 @@ const BookingForm = ({
     const confirmed = window.confirm(
       "Are you sure you want to delete this booking?"
     );
+    console.log("BOOKING ID", booking.id);
     if (confirmed) {
       onDelete(booking.id);
     }

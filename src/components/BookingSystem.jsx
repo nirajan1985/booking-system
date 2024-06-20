@@ -9,36 +9,18 @@ import { useBookingMutation } from "../hooks/useBookingMutation";
 
 const localizer = momentLocalizer(moment);
 
-const BookingSystem = () => {
-  const { data: bookings = [], isLoading, isError } = useBooking();
+const BookingSystem = ({ bookings, onCreate, onDelete }) => {
+  console.log(bookings);
 
-  const { createBooking, updateBooking, deleteBooking } = useBookingMutation();
   const [selectedBooking, setSelectedBooking] = useState(null);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!bookings) {
+    return <div>No bookings available</div>;
   }
-
-  if (isError) {
-    return <div>Error while fetching data.</div>;
-  }
-
-  const handleCreateBooking = (newBooking) => {
-    createBooking.mutate(newBooking);
-    setSelectedBooking(null);
-  };
-  const handleUpdateBooking = (newBooking) => {
-    updateBooking.mutate(newBooking);
-    setSelectedBooking(null);
-  };
-
-  const handleDeleteBooking = (bookingId) => {
-    deleteBooking.mutate(bookingId);
-    setSelectedBooking(null);
-  };
-
   const handleSelectBooking = (event) => {
-    const selectedBooking = bookings.find((booking) => booking.id === event.id);
+    const selectedBooking = bookings?.find(
+      (booking) => booking.id === event.id
+    );
     setSelectedBooking(selectedBooking);
   };
 
@@ -60,11 +42,10 @@ const BookingSystem = () => {
       </div>
 
       <BookingForm
-        onCreate={handleCreateBooking}
-        onUpdate={handleUpdateBooking}
-        onDelete={handleDeleteBooking}
         existingBookings={bookings}
         booking={selectedBooking} // Pass the selected booking for editing, or null for creating a new booking
+        onCreate={onCreate}
+        onDelete={onDelete}
       />
     </div>
   );
