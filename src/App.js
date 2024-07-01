@@ -4,6 +4,8 @@ import BookingSystem from "./components/BookingSystem.jsx";
 function App() {
   const [bookings, setBookings] = useState(null);
 
+  console.log("BOOKINGS", bookings);
+
   useEffect(() => {
     const fetchBookings = async () => {
       const response = await fetch("http://localhost:8080/api/bookings");
@@ -43,13 +45,29 @@ function App() {
         title: createdBooking.bookingTitle,
         start: createdBooking.startTime,
         end: createdBooking.endTime,
+        id: createdBooking.id,
       },
     ]);
   };
   const handleDeleteBooking = async (bookingId) => {
+    if (!bookingId) {
+      console.error("Invalid bookingId");
+      return;
+    }
+
     const response = await fetch(
-      `http://localhost:8080/api/bookings/${bookingId}`
+      `http://localhost:8080/api/bookings/${bookingId}`,
+      {
+        method: "DELETE",
+      }
     );
+
+    if (response.ok) {
+      const updatedBookings = bookings.filter((b) => b.id !== bookingId);
+      setBookings(updatedBookings);
+    } else {
+      console.error("Failed to delete booking");
+    }
   };
   return (
     <div>

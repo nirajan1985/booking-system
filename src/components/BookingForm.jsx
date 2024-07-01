@@ -1,19 +1,11 @@
-// BookingForm.js
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { validateBooking } from "./BookingUtils.js";
 
-const BookingForm = ({
-  booking,
-  onCreate,
-  onUpdate,
-  onDelete,
-  existingBookings,
-}) => {
+const BookingForm = ({ booking, onCreate, onDelete, existingBookings }) => {
   const isEditMode = !!booking;
 
   const initialFormData = {
-    id: "",
     title: "",
     start: "",
     end: "",
@@ -26,13 +18,10 @@ const BookingForm = ({
     const localDate = new Date(utcDateTime);
     return format(localDate, "yyyy-MM-dd'T'HH:mm");
   };
-  // console.log("booking", booking);
 
   useEffect(() => {
     if (isEditMode) {
       setFormData({
-        ...formData,
-        id: booking.id,
         title: booking.title,
         start: formatLocalDateTime(booking.start),
         end: formatLocalDateTime(booking.end),
@@ -67,7 +56,7 @@ const BookingForm = ({
     };
 
     if (isEditMode) {
-      onUpdate({ ...booking, ...newBooking });
+      // Handle update booking logic here if needed
     } else {
       onCreate(newBooking);
     }
@@ -79,11 +68,12 @@ const BookingForm = ({
     const confirmed = window.confirm(
       "Are you sure you want to delete this booking?"
     );
-    console.log("BOOKING ID", booking.id);
     if (confirmed) {
-      onDelete(booking.id);
+      onDelete(booking?.id);
     }
+    setFormData(initialFormData);
   };
+
   const handleChange = (e) => {
     const { value, name } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -119,7 +109,9 @@ const BookingForm = ({
         required
       />
 
-      <button className="button">{isEditMode ? "Update" : "Save"}</button>
+      <button className="button" type="submit">
+        {isEditMode ? "Update" : "Save"}
+      </button>
       {isEditMode && (
         <button type="button" onClick={handleDelete} className="button">
           Delete
