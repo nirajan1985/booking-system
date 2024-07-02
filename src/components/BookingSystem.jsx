@@ -7,7 +7,7 @@ import CustomEvent from "./CustomEvent";
 
 const localizer = momentLocalizer(moment);
 
-const BookingSystem = ({ bookings, onCreate, onDelete }) => {
+const BookingSystem = ({ bookings, onCreate, onDelete, onUpdate }) => {
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   if (!bookings) {
@@ -43,6 +43,7 @@ const BookingSystem = ({ bookings, onCreate, onDelete }) => {
         booking={selectedBooking}
         onCreate={onCreate}
         onDelete={onDelete}
+        onUpdate={onUpdate}
       />
     </div>
   );

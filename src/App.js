@@ -69,12 +69,42 @@ function App() {
       console.error("Failed to delete booking");
     }
   };
+
+  const handleUpdateBooking = async (updatedBooking) => {
+    const bookingData = {
+      startTime: updatedBooking.start,
+      endTime: updatedBooking.end,
+      bookingTitle: updatedBooking.title,
+      userId: 1, //TODO Replace with actual user ID
+      roomId: 1, //TODO Replace with actual room ID
+    };
+
+    const response = await fetch(
+      `http://localhost:8080/api/bookings/${updatedBooking.id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(bookingData),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      const updatedBookings = bookings.map((booking) =>
+        booking.id === updatedBooking.id ? updatedBooking : booking
+      );
+      setBookings(updatedBookings);
+    } else {
+      console.error("Failed to update booking");
+    }
+  };
   return (
     <div>
       <BookingSystem
         bookings={bookings}
         onCreate={handleCreateBooking}
         onDelete={handleDeleteBooking}
+        onUpdate={handleUpdateBooking}
       />
     </div>
   );

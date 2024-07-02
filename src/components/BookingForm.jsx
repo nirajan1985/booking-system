@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { validateBooking } from "./BookingUtils.js";
 
-const BookingForm = ({ booking, onCreate, onDelete, existingBookings }) => {
+const BookingForm = ({
+  booking,
+  onCreate,
+  onDelete,
+  onUpdate,
+  existingBookings,
+}) => {
   const isEditMode = !!booking;
 
   const initialFormData = {
@@ -53,10 +59,11 @@ const BookingForm = ({ booking, onCreate, onDelete, existingBookings }) => {
       ...formData,
       start: startTime,
       end: endTime,
+      id: booking?.id,
     };
 
     if (isEditMode) {
-      // Handle update booking logic here if needed
+      onUpdate(newBooking);
     } else {
       onCreate(newBooking);
     }
